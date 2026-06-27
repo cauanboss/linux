@@ -32,5 +32,5 @@ Lista de pacotes e ferramentas para instalar no sistema.
 - [x] review-agent -- agente Kilo de revisão de código (2026-06-27)
 - [x] doc -- agente Kilo de documentação (2026-06-27)
 - [x] business-rules -- agente Kilo de regras de negócio (2026-06-27)
-- [x] datagrip -- IDE JetBrains para bancos de dados (2026-06-27)
+- [x] datagrip -- IDE JetBrains para bancos de dados + .desktop entry (2026-06-27)
 - [x] brave -- navegador web (2026-06-27)

@@ -8,7 +8,6 @@ Lista de pacotes e ferramentas para instalar no sistema.
 <!-- - [ ] pacote -- descrição -->
 
 - [ ] 
-- [ ] cursor -- editor de código com IA
 ## Concluídos
 
 <!-- Mova itens concluídos para cá com a data -->
@@ -34,3 +33,4 @@ Lista de pacotes e ferramentas para instalar no sistema.
 - [x] business-rules -- agente Kilo de regras de negócio (2026-06-27)
 - [x] datagrip -- IDE JetBrains para bancos de dados + .desktop entry (2026-06-27)
 - [x] brave -- navegador web (2026-06-27)
+- [x] cursor -- editor de código com IA (2026-06-27)

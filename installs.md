@@ -9,6 +9,7 @@ Lista de pacotes e ferramentas para instalar no sistema.
 
 - [ ] 
 - [ ] battle.net (blizzard) -- via Steam non-Steam game com Proton
+- [ ] zsh -- configurar como shell padrão do sistema (chsh -s $(which zsh))
 
 ## Concluídos
 

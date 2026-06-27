@@ -7,8 +7,8 @@ Lista de pacotes e ferramentas para instalar no sistema.
 <!-- Adicione itens usando o formato abaixo -->
 <!-- - [ ] pacote -- descrição -->
 
-- [ ]
-
+- [ ] 
+- [ ] cursor -- editor de código com IA
 ## Concluídos
 
 <!-- Mova itens concluídos para cá com a data -->

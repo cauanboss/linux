@@ -37,3 +37,4 @@ Lista de pacotes e ferramentas para instalar no sistema.
 - [x] datagrip -- IDE JetBrains para bancos de dados + .desktop entry (2026-06-27)
 - [x] brave -- navegador web (2026-06-27)
 - [x] cursor -- editor de código com IA (2026-06-27)
+- [x] kitty -- terminal GPU-accelerated (padrão) (2026-06-27)

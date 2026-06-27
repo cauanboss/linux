@@ -8,6 +8,8 @@ Lista de pacotes e ferramentas para instalar no sistema.
 <!-- - [ ] pacote -- descrição -->
 
 - [ ] 
+- [ ] battle.net (blizzard) -- via Steam non-Steam game com Proton
+
 ## Concluídos
 
 <!-- Mova itens concluídos para cá com a data -->

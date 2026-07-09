@@ -38,7 +38,7 @@ Lista de pacotes e ferramentas para instalar no sistema.
 - [x] brave -- navegador web (2026-06-27)
 - [x] cursor -- editor de código com IA (2026-06-27)
 - [x] secrets (org.gnome.World.Secrets) -- gerenciador de senhas GNOME (2026-06-28)
-- [x] terminus -- terminal emulator (padrão) (2026-06-28)
+- [x] zash terminal (zashterminal) -- terminal emulator (padrão, substitui terminus) (2026-07-07)
 - [x] transmission -- BitTorrent client (2026-06-28)
 - [x] gear-lever -- gerenciador de AppImages (2026-07-05)
 - [x] warehouse -- gerenciador de Flatpaks (2026-07-05)
@@ -47,3 +47,4 @@ Lista de pacotes e ferramentas para instalar no sistema.
 - [x] ente auth (io.ente.auth) -- autenticador 2FA (2026-07-07)
 - [x] localsend (org.localsend.localsend_app) -- compartilhamento de arquivos na rede local (2026-07-07)
 - [x] linux toys (linuxtoys) -- conjunto de utilitários Linux via `linux.toys/install.sh` (2026-07-07)
+- [x] rtk (rtk-ai/rtk) -- CLI proxy que reduz consumo de tokens LLM em 60-90% (2026-07-09)

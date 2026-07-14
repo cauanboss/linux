@@ -1,6 +1,6 @@
-# Instalações
+# Instalações — Arch Linux
 
-Registro cronológico de ferramentas instaladas no sistema.
+Registro cronológico de ferramentas instaladas no Arch Linux (CachyOS).
 
 - 2026-06-27 — kilo — gerenciador de projetos AI
 - 2026-06-27 — n (tj/n) — gerenciador de versões do Node.js
@@ -25,3 +25,17 @@ Registro cronológico de ferramentas instaladas no sistema.
 - 2026-07-07 — localsend (org.localsend.localsend_app) — compartilhamento de arquivos na rede local
 - 2026-07-07 — linux toys (linuxtoys) — conjunto de utilitários Linux via `linux.toys/install.sh`
 - 2026-07-09 — rtk (rtk-ai/rtk) — CLI proxy que reduz consumo de tokens LLM em 60-90%
+- 2026-07-12 — firefox — navegador web
+- 2026-07-12 — paru — AUR helper alternativo
+- 2026-07-13 — rclone — sync de cloud (Google Drive, etc)
+- 2026-07-13 — rclone-ui-bin — interface gráfica pro rclone
+- 2026-07-13 — unzip — descompactador ZIP
+- 2026-07-14 — alacritty — terminal emulator (GPU)
+- 2026-07-14 — btop — monitor de sistema via terminal
+- 2026-07-14 — fastfetch — info do sistema (alternativa ao neofetch)
+- 2026-07-14 — kitty — terminal emulator (GPU)
+- 2026-07-14 — meld — diff/merge visual
+- 2026-07-14 — micro — editor de texto via terminal
+- 2026-07-14 — ripgrep (rg) — busca rápida em código/arquivos
+- 2026-07-14 — dolphin — gerenciador de arquivos KDE
+- 2026-07-14 — openssh — servidor/cliente SSH

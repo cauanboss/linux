@@ -1,97 +1,114 @@
-# Instalações — Arch Linux
+# Instalações — Arch Linux (CachyOS)
 
-Registro cronológico de ferramentas instaladas no Arch Linux (CachyOS).
+Ordem recomendada para instalação do zero.
 
-- 2026-06-27 — kilo — gerenciador de projetos AI
-- 2026-06-27 — n (tj/n) — gerenciador de versões do Node.js
-- 2026-06-27 — steam — plataforma de jogos
-- 2026-06-27 — zsh — shell alternativo
-- 2026-06-27 — ohmyzsh — gerenciador de configuração do zsh
-- 2026-06-27 — zsh-autosuggestions — plugin de sugestões de comandos
-- 2026-06-27 — zsh-syntax-highlighting — plugin de highlights de sintaxe
-- 2026-06-27 — docker — engine de containers
-- 2026-06-27 — wl-clipboard — clipboard para Wayland / brilho de teclado
-- 2026-06-27 — datagrip — IDE JetBrains para bancos de dados + .desktop entry
-- 2026-06-27 — brave — navegador web
-- 2026-06-27 — cursor — editor de código com IA
-- 2026-06-28 — secrets (org.gnome.World.Secrets) — gerenciador de senhas GNOME
-- 2026-06-28 — transmission — BitTorrent client
-- 2026-07-05 — gear-lever — gerenciador de AppImages
-- 2026-07-05 — warehouse — gerenciador de Flatpaks
-- 2026-07-07 — zash terminal (zashterminal) — terminal emulator (padrão, substitui terminus)
-- 2026-07-07 — mission center (io.missioncenter.MissionCenter) — monitor de sistema
-- 2026-07-07 — flatsweep (io.github.giantpinkrobots.flatsweep) — limpeza de resíduos de Flatpaks desinstalados
-- 2026-07-07 — ente auth (io.ente.auth) — autenticador 2FA
-- 2026-07-07 — localsend (org.localsend.localsend_app) — compartilhamento de arquivos na rede local
-- 2026-07-07 — linux toys (linuxtoys) — conjunto de utilitários Linux via `linux.toys/install.sh`
-- 2026-07-09 — rtk (rtk-ai/rtk) — CLI proxy que reduz consumo de tokens LLM em 60-90%
-- 2026-07-12 — firefox — navegador web
-- 2026-07-12 — paru — AUR helper alternativo
-- 2026-07-13 — rclone — sync de cloud (Google Drive, etc)
-- 2026-07-13 — rclone-ui-bin — interface gráfica pro rclone
-  - Problema: rclone-ui dava erro 401 Unauthorized e não conectava
-  - Causa: conflito entre o serviço systemd `rclone-rcd.service` (com auth `rclone:rclone`) e o daemon que o rclone-ui tenta iniciar (`--rc-no-auth` na porta 5572)
-  - Solução:
-    1. Desabilitar o serviço conflitante: `systemctl --user disable --now rclone-rcd.service`
-    2. Remover `~/.config/systemd/user/rclone-rcd.service` (evita reativar por engano)
-    3. Corrigir handler OAuth em `~/.local/share/applications/rclone-ui-handler.desktop` — `Exec=rclone-ui %u` (estava apontando pro Cursor)
-    4. Se abrir e fechar de novo der problema, matar daemon órfão: `pkill -f "rclone rcd"` e reabrir
-    5. (Opcional) agendamento de tarefas: `sudo pacman -S cronie && systemctl enable --now cronie.service`
-- 2026-07-13 — unzip — descompactador ZIP
-- 2026-07-14 — alacritty — terminal emulator (GPU)
-- 2026-07-14 — btop — monitor de sistema via terminal
-- 2026-07-14 — fastfetch — info do sistema (alternativa ao neofetch)
-- 2026-07-14 — kitty — terminal emulator (GPU)
-- 2026-07-14 — meld — diff/merge visual
-- 2026-07-14 — micro — editor de texto via terminal
-- 2026-07-14 — ripgrep (rg) — busca rápida em código/arquivos
-- 2026-07-14 — dolphin — gerenciador de arquivos KDE
-- 2026-07-14 — openssh — servidor/cliente SSH
+---
 
-- 2026-07-15 — datagrip (Toolbox) — IDE JetBrains para bancos de dados via Toolbox oficial
-  - Problema: senhas/credenciais não persistiam após reiniciar o DataGrip no Hyprland (CachyOS)
-  - Causa: nenhum serviço de keyring rodando (gnome-keyring/kwalletd não iniciados no Hyprland)
-  - Solução:
-    1. Abrir Settings → Appearance & System Settings → Passwords
-    2. Alterar de "Forget on restart" para "In KeePass"
-    3. Definir path do arquivo: ~/.config/JetBrains/DataGrip2026.1/c.kdbx
-    (sem a barra no final — é um arquivo, não diretório)
-  - Alternativa: instalar gnome-keyring e adicionar ao autostart do Hyprland:
-    `exec-once = /usr/bin/gnome-keyring-daemon --start --components=secrets`
+## 1. Base
 
-- 2026-07-18 — sddm-astronaut-theme — tema de login SDDM para Hyprland (substitui sddm-nordic-theme-git e catppuccin-sddm-theme-mocha)
-  - Repo: https://github.com/Keyitdev/sddm-astronaut-theme (3.1k stars, Qt6, zero deps KDE)
-  - Instalação: `yay -S sddm-astronaut-theme` (dependência: qt6-virtualkeyboard)
-  - Config SDDM:
-    - `/etc/sddm.conf.d/wayland.conf` → `DisplayServer=wayland` (necessário para Hyprland)
-    - `/etc/sddm.conf.d/theme.conf` → `Current=sddm-astronaut-theme`
-  - Sub-temas disponíveis em `/usr/share/sddm/themes/sddm-astronaut-theme/Themes/`:
-    - astronaut (padrão), black_hole, cyberpunk, japanese_aesthetic, pixel_sakura, purple_leaves, post-apocalyptic_hacker, hyprland_kath
-  - Para trocar sub-tema: editar `ConfigFile=` no arquivo `/usr/share/sddm/themes/sddm-astronaut-theme/metadata.desktop`
-  - Preview: `sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/sddm-astronaut-theme/`
-  - Sub-tema atual: hyprland_kath (ConfigFile=Themes/hyprland_kath.conf)
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 1.1 | **paru** | `sudo pacman -S paru` | AUR helper (tudo que depende do AUR precisa disso) |
+| 1.2 | **unzip** | `sudo pacman -S unzip` | Descompactar ZIP |
+| 1.3 | **openssh** | `sudo pacman -S openssh` | SSH |
 
-- 2026-07-18 — ssh-agent (systemd user service) — agente SSH único para toda sessão no fish shell + Hyprland
-  - Serviço: `~/.config/systemd/user/ssh-agent.service` → Type=forking, socket em `$XDG_RUNTIME_DIR/ssh-agent.socket`
-  - Fish: `~/.config/fish/config.fish` → carrega `~/.ssh/agent.env` automaticamente
-  - Comandos úteis:
-    - `systemctl --user status ssh-agent` — verificar status
-    - `ssh-add ~/.ssh/<chave>` — adicionar chave (vale pra sessão inteira)
-    - `ssh-add -l` — listar chaves carregadas
+## 2. Dev Core
 
-- 2026-07-16 — shelly — gerenciador de pacotes gráfico (GTK4) para Arch/pacman/flatpak
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 2.1 | **n** | `sudo pacman -S n` | Gerenciador de versões Node.js |
+| 2.2 | **kilo** | `npm i -g kilo` | Gerenciador de projetos com IA |
 
-- 2026-07-18 — clamav — antivírus (daemon + CLI, sem GUI)
-- 2026-07-18 — gufw — GUI para UFW firewall
+## 3. Shell e Terminal
 
-- 2026-07-19 — monitor 155Hz + VRR — ajustes no Hyprland (CachyOS)
-  - Monitor AOC Q27G2SG4 (DP-1) configurado para 2560×1440@155Hz (estava a 60Hz)
-  - Arquivos: `~/.config/hypr/config/variables.lua` (MONITOR1 = "DP-1"), `monitors.lua` (mode = "2560x1440@155")
-  - VRR/Freesync ativado: `misc.lua` (vrr = 1), `monitors.lua` (vrr = true)
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 3.1 | **zsh** | `sudo pacman -S zsh` | Shell alternativo |
+| 3.2 | ohmyzsh | `sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"` | Framework de config do zsh |
+| 3.3 | zsh-autosuggestions | `git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions` | Sugestões de comandos |
+| 3.4 | zsh-syntax-highlighting | `git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting` | Highlight de sintaxe |
+| 3.5 | **kitty** | `sudo pacman -S kitty` | Terminal GPU (padrão no Hyprland) |
 
-- 2026-07-19 — Noctalia — shell integrado do CachyOS para Hyprland
-  - Substitui: waybar (barra), rofi (launcher), dunst (notificações), swaylock (lock screen)
-  - Binds principais: SUPER+Space (launcher), SUPER+L (lock), SUPER+A (notificações), Print (screenshot)
-  - Atalhos de hardware (volume/brilho/mídia) gerenciados pelo noctalia
-  - dbus: org.freedesktop.Notifications, org.freedesktop.ScreenSaver, org.kde.StatusNotifierWatcher
-  - Pendências: wallpaper engine (hyprpaper/swww), idle manager (hypridle/swayidle), equalizador (easyeffects)
+## 4. Ferramentas Dev
+
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 4.1 | **docker** | `sudo pacman -S docker` | Containers |
+| 4.2 | **ripgrep** | `sudo pacman -S ripgrep` | Busca rápida em código |
+| 4.3 | **rtk** | `npm i -g rtk` | Proxy que reduz tokens LLM |
+| 4.4 | **micro** | `sudo pacman -S micro` | Editor de texto no terminal |
+| 4.5 | **meld** | `sudo pacman -S meld` | Diff/merge visual |
+| 4.6 | **btop** | `sudo pacman -S btop` | Monitor de sistema no terminal |
+| 4.7 | **fastfetch** | `sudo pacman -S fastfetch` | Info do sistema |
+
+## 5. Navegadores e Editor
+
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 5.1 | **firefox** | `sudo pacman -S firefox` | Navegador |
+| 5.2 | **brave** | `paru -S brave-bin` | Navegador alternativo |
+| 5.3 | cursor | AppImage / site | Editor com IA |
+
+## 6. Cloud e Sincronização
+
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 6.1 | **rclone** | `sudo pacman -S rclone` | Sync de cloud |
+| 6.2 | **rclone-ui-bin** | `paru -S rclone-ui-bin` | Interface gráfica pro rclone |
+| 6.3 | ssh-agent | config manual → `installs-arch.md` original | Agente SSH único pra sessão |
+
+## 7. Bancos de Dados
+
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 7.1 | **datagrip** | JetBrains Toolbox | IDE de banco de dados |
+
+## 8. Gaming
+
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 8.1 | **steam** | `sudo pacman -S steam` | Plataforma de jogos |
+| 8.2 | **gamemode** | `sudo pacman -S gamemode` | Otimização de CPU/GPU em jogos |
+
+## 9. Utilitários
+
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 9.1 | **wl-clipboard** | `sudo pacman -S wl-clipboard` | Clipboard Wayland |
+| 9.2 | **dolphin** | `sudo pacman -S dolphin` | Gerenciador de arquivos |
+| 9.3 | **shelly** | `sudo pacman -S shelly` | Gerenciador gráfico de pacotes |
+| 9.4 | **gear-lever** | flatpak | Gerenciador de AppImages |
+| 9.5 | **warehouse** | flatpak | Gerenciador de Flatpaks |
+| 9.6 | **mission center** | flatpak | Monitor de sistema gráfico |
+| 9.7 | **flatsweep** | flatpak | Limpeza de resíduos Flatpak |
+| 9.8 | **ente auth** | flatpak | Autenticador 2FA |
+| 9.9 | **localsend** | flatpak | Compartilhamento de arquivos local |
+| 9.10 | **transmission** | `sudo pacman -S transmission` | Cliente BitTorrent |
+| 9.11 | **linux toys** | `curl -fsSL linux.toys/install.sh \| sh` | Utilitários Linux |
+
+## 10. Segurança e Sistema
+
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 10.1 | **gufw** | `sudo pacman -S gufw` | Firewall gráfico |
+| 10.2 | **clamav** | `sudo pacman -S clamav` | Antivírus |
+| 10.3 | **hypridle** | `sudo pacman -S hypridle` | Gerenciador de inatividade |
+
+## 11. Aparência
+
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 11.1 | **sddm-astronaut-theme** | `paru -S sddm-astronaut-theme` | Tema de login SDDM |
+
+---
+
+## 12. Ajustes Pós-Instalação
+
+Depois de tudo instalado, aplicar estas configurações:
+
+| Ordem | Ajuste | O que faz |
+|---|---|---|
+| 12.1 | Monitor 155Hz + VRR | `variables.lua` + `monitors.lua` + `misc.lua` |
+| 12.2 | Hypridle config | `hypridle.conf` — timeout 5min lock, 10min dpms-off |
+| 12.3 | Noctalia corner migration | `config.toml` — `corner = { ... }` em vez de `radius_*` |
+| 12.4 | Noctalia mapeado | Launcher (`SUPER+Space`), lock (`SUPER+L`), notifs (`SUPER+A`), screenshots (`Print`) |

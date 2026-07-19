@@ -78,3 +78,20 @@ Registro cronológico de ferramentas instaladas no Arch Linux (CachyOS).
     - `systemctl --user status ssh-agent` — verificar status
     - `ssh-add ~/.ssh/<chave>` — adicionar chave (vale pra sessão inteira)
     - `ssh-add -l` — listar chaves carregadas
+
+- 2026-07-16 — shelly — gerenciador de pacotes gráfico (GTK4) para Arch/pacman/flatpak
+
+- 2026-07-18 — clamav — antivírus (daemon + CLI, sem GUI)
+- 2026-07-18 — gufw — GUI para UFW firewall
+
+- 2026-07-19 — monitor 155Hz + VRR — ajustes no Hyprland (CachyOS)
+  - Monitor AOC Q27G2SG4 (DP-1) configurado para 2560×1440@155Hz (estava a 60Hz)
+  - Arquivos: `~/.config/hypr/config/variables.lua` (MONITOR1 = "DP-1"), `monitors.lua` (mode = "2560x1440@155")
+  - VRR/Freesync ativado: `misc.lua` (vrr = 1), `monitors.lua` (vrr = true)
+
+- 2026-07-19 — Noctalia — shell integrado do CachyOS para Hyprland
+  - Substitui: waybar (barra), rofi (launcher), dunst (notificações), swaylock (lock screen)
+  - Binds principais: SUPER+Space (launcher), SUPER+L (lock), SUPER+A (notificações), Print (screenshot)
+  - Atalhos de hardware (volume/brilho/mídia) gerenciados pelo noctalia
+  - dbus: org.freedesktop.Notifications, org.freedesktop.ScreenSaver, org.kde.StatusNotifierWatcher
+  - Pendências: wallpaper engine (hyprpaper/swww), idle manager (hypridle/swayidle), equalizador (easyeffects)

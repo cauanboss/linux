@@ -101,3 +101,9 @@ Registro cronológico de ferramentas instaladas no Arch Linux (CachyOS).
   - 10 min inativo → `noctalia msg dpms-off`
   - Arquivos: `~/.config/hypr/hypridle.conf`, autostart via `autostart.lua`
   - Noctalia migration: corner radius migrado de `radius_*` para `corner = { ... }` em `~/.config/noctalia/config.toml`
+
+- 2026-07-22 — kitty + SSH — problemas de terminal remoto (cores, keys, terminfo)
+  - Problema: `ssh` direto no kitty quebra/comporta mal no host remoto (TERM `xterm-kitty` ausente)
+  - Solução: usar o kitten antes do ssh:
+    `kitten ssh user@host`
+    (equivalente: `kitty +kitten ssh user@host`)

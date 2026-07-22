@@ -4,6 +4,30 @@ Ordem recomendada para instalação do zero.
 
 ---
 
+## ⚠️ Antes de começar: Corrigir keyring do CachyOS
+
+Se ao rodar `pacman -Sy` aparecer o erro:
+```
+erro: cachyos-extra-v3: a assinatura de "CachyOS <admin@cachyos.org>" é inválida
+```
+
+Resolva com:
+```bash
+sudo pacman-key --refresh-keys
+sudo pacman -Syy
+```
+
+Se persistir, forçar reinstalação do keyring:
+```bash
+sudo rm -f /var/lib/pacman/sync/cachyos-extra-v3.db*
+curl -O https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-keyring-20240331-1-any.pkg.tar.zst
+sudo pacman -U --overwrite='*' cachyos-keyring-20240331-1-any.pkg.tar.zst
+sudo pacman -Syy
+```
+
+
+---
+
 ## 1. Base
 
 | Ordem | Pacote | Comando | Pra quê |
@@ -27,7 +51,7 @@ Ordem recomendada para instalação do zero.
 | 3.2 | ohmyzsh | `sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"` | Framework de config do zsh |
 | 3.3 | zsh-autosuggestions | `git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions` | Sugestões de comandos |
 | 3.4 | zsh-syntax-highlighting | `git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting` | Highlight de sintaxe |
-| 3.5 | **kitty** | `sudo pacman -S kitty` | Terminal GPU (padrão no Hyprland) |
+| 3.5 | **kitty** | `sudo pacman -S kitty` | Terminal GPU (padrão no Hyprland). SSH: usar `kitten ssh` (não `ssh` puro) |
 
 ## 4. Ferramentas Dev
 
@@ -108,7 +132,82 @@ Depois de tudo instalado, aplicar estas configurações:
 
 | Ordem | Ajuste | O que faz |
 |---|---|---|
-| 12.1 | Monitor 155Hz + VRR | `variables.lua` + `monitors.lua` + `misc.lua` |
+| 12.1 | **Monitor principal + 155Hz + VRR** | Configurar monitor externo como principal, resolução/refresh nativa, e FreeSync |
 | 12.2 | Hypridle config | `hypridle.conf` — timeout 5min lock, 10min dpms-off |
 | 12.3 | Noctalia corner migration | `config.toml` — `corner = { ... }` em vez de `radius_*` |
 | 12.4 | Noctalia mapeado | Launcher (`SUPER+Space`), lock (`SUPER+L`), notifs (`SUPER+A`), screenshots (`Print`) |
+| 12.5 | Kitty SSH | Usar `kitten ssh` em vez de `ssh` puro |
+
+### 12.1 — Monitor Principal + 155Hz + VRR
+
+**Problema:** O monitor externo não era reconhecido como principal (workspaces abriam no laptop), estava a 60Hz mesmo com painel 155Hz, e FreeSync não funcionava.
+
+**Solução:** Requer 3 arquivos de config do Hyprland (CachyOS):
+
+#### Passo 1: Descobrir nome da saída do monitor
+```bash
+hyprctl monitors | grep Monitor
+# Exemplo de saída:
+# Monitor HDMI-A-1 (ID ...):  
+# Monitor eDP-1 (ID ...):
+```
+
+#### Passo 2: Configurar `~/.config/hypr/config/variables.lua`
+```lua
+-- Monitors
+MONITOR1 = "HDMI-A-1"   -- monitor externo (ou DP-1, dependendo do cabo)
+MONITOR2 = "eDP-1"       -- tela do notebook
+MONITOR3 = ""
+PRIMARY_MONITOR = MONITOR1  -- força externo como principal
+```
+
+#### Passo 3: Configurar `~/.config/hypr/config/monitors.lua`
+```lua
+hl.monitor({
+    output    = MONITOR1,
+    mode      = "preferred",   -- usa resolução/refresh nativa do monitor (ex: 2560x1440@155)
+    position  = "0x0",         -- primário na esquerda
+    scale     = "1",
+})
+
+hl.monitor({
+    output    = MONITOR2,
+    mode      = "preferred",
+    position  = "1920x0",      -- secundário à direita do primário
+    scale     = "1.5",
+    mirror    = "HDMI-A-1",    -- espelha o externo (opcional: remova para estender)
+})
+```
+
+#### Passo 4: Ativar VRR/FreeSync em `~/.config/hypr/config/misc.lua`
+```lua
+hl.config({
+    misc = {
+        vrr = 3,   -- 0=desligado, 1=apenas fullscreen, 2=sempre que possível, 3=sempre forçado (gaming)
+        ...
+    },
+})
+```
+
+#### Passo 5: Aplicar sem reiniciar
+```bash
+hyprctl reload
+```
+
+## 13. Áudio
+
+| Ordem | Pacote | Comando | Pra quê |
+|---|---|---|---|
+| 13.1 | **easyeffects** | `sudo pacman -S easyeffects` | Equalizador de sistema — EQ paramétrico, Bass Boost, compressor, reverb, surround |
+| 13.2 | **pipewire** | já incluso no CachyOS | Servidor de áudio (substitui PulseAudio/JACK) |
+| 13.3 | **pipewire-pulse** | já incluso | Compatibilidade com apps PulseAudio |
+
+### Configuração Rápida
+
+1. Abrir EasyEffects → aba **Output**
+2. Clicar **Add Effect** → **Equalizer**
+3. Escolher preset (ex: "Loudness", "Rock", "Electronic", "Bass Boost")
+4. Ou ajustar bandas manualmente clicando no gráfico
+
+O equalizador aplica automaticamente sobre **toda** saída de áudio (Spotify, navegador, player de música, etc).
+
